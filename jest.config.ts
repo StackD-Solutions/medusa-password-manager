@@ -7,7 +7,7 @@ const config: Config = {
 	transform: {
 		'^.+\\.tsx?$': '@swc/jest'
 	},
-	collectCoverageFrom: ['src/api/**/validators.ts'],
+	collectCoverageFrom: ['src/utils/**/*.ts', 'src/api/**/validators.ts'],
 	coverageThreshold: {
 		global: {
 			branches: 100,
