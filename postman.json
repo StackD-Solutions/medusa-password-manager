@@ -1,0 +1,56 @@
+{
+	"info": {
+		"name": "Medusa Password Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:9000"
+		},
+		{
+			"key": "publishable_api_key",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	],
+	"item": [
+		{
+			"name": "Store",
+			"item": [
+				{
+					"name": "Change password",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{base_url}}/store/customers/me/password/change",
+							"host": ["{{base_url}}"],
+							"path": ["store", "customers", "me", "password", "change"]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-publishable-api-key",
+								"value": "{{publishable_api_key}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"current_password\": \"<current_password>\",\n  \"new_password\": \"<new_password>\"\n}"
+						}
+					}
+				}
+			]
+		}
+	]
+}

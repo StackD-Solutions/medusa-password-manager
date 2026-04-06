@@ -1,0 +1,115 @@
+openapi: 3.1.0
+info:
+ title: Medusa Password Manager API
+ description: API for password management in Medusa stores
+ version: 0.1.0
+servers:
+ - url: http://localhost:9000
+   description: Local Medusa server
+paths:
+ /store/customers/me/password/change:
+  post:
+   summary: Change customer password
+   description: Changes the password for the currently authenticated customer
+   operationId: changePassword
+   tags:
+    - Password Management
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: '#/components/schemas/ChangePasswordRequest'
+   responses:
+    '200':
+     description: Password changed successfully
+     content:
+      application/json:
+       schema:
+        $ref: '#/components/schemas/ChangePasswordResponse'
+    '400':
+     description: Invalid request or no emailpass provider found
+     content:
+      application/json:
+       schema:
+        $ref: '#/components/schemas/Error'
+    '401':
+     description: Unauthorized — customer is not authenticated
+     content:
+      application/json:
+       schema:
+        $ref: '#/components/schemas/Error'
+    '500':
+     description: Internal server error
+     content:
+      application/json:
+       schema:
+        $ref: '#/components/schemas/Error'
+webhooks:
+ auth.password_reset:
+  post:
+   summary: Password reset requested
+   description: Fired when a customer requests a password reset via Medusa's auth system
+   operationId: onPasswordReset
+   tags:
+    - Events
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: '#/components/schemas/ResetPasswordData'
+components:
+ schemas:
+  ChangePasswordRequest:
+   type: object
+   required:
+    - current_password
+    - new_password
+   properties:
+    current_password:
+     type: string
+     minLength: 1
+     description: The customer's current password for verification
+    new_password:
+     type: string
+     minLength: 1
+     description: The new password to set for the customer account
+
+  ChangePasswordResponse:
+   type: object
+   required:
+    - message
+   properties:
+    message:
+     type: string
+     description: Confirmation message
+
+  ResetPasswordData:
+   type: object
+   required:
+    - entity_id
+    - token
+    - actor_type
+   properties:
+    entity_id:
+     type: string
+     description: The email address of the customer requesting the reset
+    token:
+     type: string
+     description: The password reset token
+    actor_type:
+     type: string
+     description: The type of actor (e.g. customer)
+
+  Error:
+   type: object
+   required:
+    - message
+   properties:
+    message:
+     type: string
+     description: Error message
+    code:
+     type: string
+     description: Error code
