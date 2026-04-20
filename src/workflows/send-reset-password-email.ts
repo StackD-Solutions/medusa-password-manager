@@ -9,7 +9,7 @@ export const sendResetPasswordEmailWorkflow = createWorkflow('send-reset-passwor
 		template: 'reset-password',
 		data: {
 			customer_name: data.input.customer_name,
-			reset_url: `${data.input.callback_url}?token=${data.input.token}&email=${data.input.email}`
+			reset_url: `${data.input.callback_url}?token=${data.input.token}`
 		}
 	}))
 
