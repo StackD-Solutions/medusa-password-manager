@@ -61,7 +61,7 @@ export default defineConfig({
 		{
 			resolve: '@stackd-solutions/medusa-password-manager/modules/password-manager',
 			options: {
-				// All options are optional
+				callbackUrl: 'https://mystore.com/password/reset',
 				passwordPolicy: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'
 			}
 		}
@@ -71,19 +71,10 @@ export default defineConfig({
 
 ### Plugin Options
 
-| Option           | Type     | Default | Description                                                                                 |
-| ---------------- | -------- | ------- | ------------------------------------------------------------------------------------------- |
-| `passwordPolicy` | `string` | -       | Regex pattern that new passwords must match (e.g. minimum length, required character types) |
-
-### Environment Variables
-
-The subscriber uses `STOREFRONT_URL` to build the password reset URL:
-
-```
-STOREFRONT_URL=http://localhost:8000
-```
-
-If `STOREFRONT_URL` is not set, it falls back to the first origin in `STORE_CORS`.
+| Option           | Type     | Default      | Description                                                                                 |
+| ---------------- | -------- | ------------ | ------------------------------------------------------------------------------------------- |
+| `callbackUrl`    | `string` | **required** | Full URL the reset-password email will point customers to                                   |
+| `passwordPolicy` | `string` | -            | Regex pattern that new passwords must match (e.g. minimum length, required character types) |
 
 ## API Endpoints
 

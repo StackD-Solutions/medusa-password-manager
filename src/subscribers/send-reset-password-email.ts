@@ -1,5 +1,7 @@
 import type {SubscriberArgs, SubscriberConfig} from '@medusajs/framework'
 import {Modules} from '@medusajs/framework/utils'
+import {PASSWORD_MANAGER_MODULE} from '../modules/password-manager'
+import type PasswordManagerModuleService from '../modules/password-manager/service'
 import type {ResetPasswordData} from '../types'
 import {sendResetPasswordEmailWorkflow} from '../workflows/send-reset-password-email'
 
@@ -9,7 +11,7 @@ const sendResetPasswordEmailHandler = async ({event: {data}, container}: Subscri
 	}
 
 	const customerModule = container.resolve(Modules.CUSTOMER)
-	const callbackUrl = process.env.STOREFRONT_URL || process.env.STORE_CORS?.split(',')[0]
+	const passwordManagerModule = container.resolve<PasswordManagerModuleService>(PASSWORD_MANAGER_MODULE)
 
 	let customerName = ''
 	try {
@@ -25,7 +27,7 @@ const sendResetPasswordEmailHandler = async ({event: {data}, container}: Subscri
 		input: {
 			email: data.entity_id,
 			customer_name: customerName,
-			callback_url: callbackUrl + '/password/reset',
+			callback_url: passwordManagerModule.callbackUrl,
 			token: data.token
 		}
 	})

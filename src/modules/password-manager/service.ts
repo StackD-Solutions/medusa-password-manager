@@ -1,7 +1,8 @@
 import {z} from 'zod'
 
 const PluginOptionsSchema = z.object({
-	passwordPolicy: z.string().optional()
+	passwordPolicy: z.string().optional(),
+	callbackUrl: z.string().url()
 })
 
 export type PasswordManagerPluginOptions = z.infer<typeof PluginOptionsSchema>
@@ -17,6 +18,10 @@ class PasswordManagerModuleService {
 
 	get passwordPolicy(): RegExp | undefined {
 		return this.passwordPolicyRegex_
+	}
+
+	get callbackUrl(): string {
+		return this.pluginOptions_.callbackUrl
 	}
 }
 
